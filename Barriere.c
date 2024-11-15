@@ -19,7 +19,7 @@ void poserBarriere(int x, int y, char type) {
         barrierCount++;
 
         if (type == 'H') {
-            players[0].remainingBarriers--; // Décrémente le nombre de barrières restantes pour le joueur 1
+            players[0].remainingBarriers--; // Décrémente le nombre de barrières restantes pour le joueur 1            Erreur dans cette fonction.
         } else if (type == 'V') {
             players[1].remainingBarriers--; // Décrémente le nombre de barrières restantes pour le joueur 2
         }
