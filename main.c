@@ -1,7 +1,7 @@
 #include <stdio.h>
-#define MENU_H
-#define PLATO_H
+#include "menu.h"
 
 int main() {
-    menu();
+    menu(); // Appel du menu qui gère le lancement du plateau
+    return 0;
 }
