@@ -1,8 +1,6 @@
-//
-// Created by joshu on 20/11/2024.
-//
+#ifndef QUORIDOR_MENU_H
+#define QUORIDOR_MENU_H
 
-#ifndef MENU_H
-#define MENU_H
 int menu();
-#endif //MENU_H
+
+#endif //QUORIDOR_MENU_H
