@@ -1,3 +1,4 @@
+#define PLATO_H
 
 void deplacerJoueur(int *x, int *y, int dx, int dy) {
     int newX = *x + dx;
