@@ -1,7 +1,6 @@
-#ifndef QUORIDOR_DEPLACEMENT_H
-#define QUORIDOR_DEPLACEMENT_H
+#ifndef DEPLACEMENT_H
+#define DEPLACEMENT_H
 
-void gererDeplacement(int *playerX, int *playerY);
-void deplacerJoueur(int *x, int *y, int dx, int dy);
+void gererDeplacement(int *playerX, int *playerY, int currentPlayer);
 
-#endif //QUORIDOR_DEPLACEMENT_H
+#endif // DEPLACEMENT_H

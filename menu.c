@@ -2,6 +2,10 @@
 #include "Plato.h"
 #include "deplacement.h"
 
+#include <stdio.h>
+#include "Plato.h"
+#include "deplacement.h"
+
 void gameLoop() {
     int playerX = 0, playerY = 4; // Initial position of player 1
     int player2X = 8, player2Y = 4; // Initial position of player 2
@@ -17,10 +21,10 @@ void gameLoop() {
         }
 
         if (currentPlayer == 1) {
-            gererDeplacement(&playerX, &playerY);
+            gererDeplacement(&playerX, &playerY, currentPlayer);
             currentPlayer = 2;
         } else {
-            gererDeplacement(&player2X, &player2Y);
+            gererDeplacement(&player2X, &player2Y, currentPlayer);
             currentPlayer = 1;
         }
     }
