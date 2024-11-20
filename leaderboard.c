@@ -20,7 +20,6 @@ void initialiserClassement(Joueur *joueurs, int nbJoueurs) {
         joueurs[i].coups = 0;
         joueurs[i].victoires = 0;
         joueurs[i].parties_jouees = 0;
-        // On suppose que les noms sont définis ailleurs
     }
 }
 
