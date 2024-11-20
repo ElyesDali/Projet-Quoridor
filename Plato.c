@@ -37,31 +37,10 @@ void initialiserPlateau() {
     plateau[8][4].joueur = 2; // Joueur 2
 }
 
-void poserBarriere(int x, int y, char type) {
-    if (barrierCount < TAILLE * TAILLE) { // Assurez-vous de ne pas dépasser le nombre maximal de barrières
-        barriers[barrierCount].x = x;
-        barriers[barrierCount].y = y;
-        barriers[barrierCount].type = type;
-        barrierCount++;
 
-        if (type == 'H') {
-            players[0].remainingBarriers--; // Décrémente le nombre de barrières restantes pour le joueur 1
-        } else if (type == 'V') {
-            players[1].remainingBarriers--; // Décrémente le nombre de barrières restantes pour le joueur 2
-        }
-    }
-}
-
-int estBarrierePosee(int x, int y, char type) {
-    for (int i = 0; i < barrierCount; i++) {
-        if (barriers[i].x == x && barriers[i].y == y && barriers[i].type == type) {
-            return 1; // Barrière trouvée
-        }
-    }
-    return 0; // Barrière non trouvée
-}
 
 void afficherPlateau() {
+    clearScreen();
     printf("   ");
     for (int i = 0; i < TAILLE; i++) {
         printf("  %d ", i);
@@ -121,31 +100,4 @@ void displayInfo(int remainingTime, Player players[]) {
     printf("  Player 2: Barriers: %d\n", players[1].remainingBarriers);
     printf("  Time Remaining: %02d:%02d\n", remainingTime / 60, remainingTime % 60);
     printf("  ---------------------\n");
-}
-
-int main() {
-    initialiserPlateau();
-    players[0].playerID = 1;
-    players[0].remainingBarriers = 10;
-    players[1].playerID = 2;
-    players[1].remainingBarriers = 10;
-
-    int remainingTime = INITIAL_TIME;
-
-    while (remainingTime > 0) {
-        clearScreen(); // Effacer l'écran à chaque itération
-
-
-
-        // Afficher le plateau et les informations des joueurs
-        afficherPlateau();
-        displayInfo(remainingTime, players);
-
-        remainingTime--;
-        sleep(1);
-    }
-
-
-    printf("Time's up!\n");
-    return 0;
 }
