@@ -1,16 +1,28 @@
 #include <stdio.h>
 #include "Plato.h"
+#include "deplacement.h"
 
 void gameLoop() {
-    int command;
+    int playerX = 0, playerY = 4; // Initial position of player 1
+    int player2X = 8, player2Y = 4; // Initial position of player 2
+    int currentPlayer = 1;
+
     while (1) {
         afficherPlateau();
-        printf("\nEnter command (0 to quit): ");
+        printf("\nPlayer %d's turn. Enter command (0 to quit): ", currentPlayer);
+        int command;
         scanf("%d", &command);
         if (command == 0) {
             break;
         }
-        // Add logic to handle other commands and update the board
+
+        if (currentPlayer == 1) {
+            gererDeplacement(&playerX, &playerY);
+            currentPlayer = 2;
+        } else {
+            gererDeplacement(&player2X, &player2Y);
+            currentPlayer = 1;
+        }
     }
 }
 
