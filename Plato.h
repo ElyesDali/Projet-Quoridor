@@ -1,11 +1,19 @@
-//
-// Created by joshu on 20/11/2024.
-//
+#ifndef QUORIDOR_PLATO_H
+#define QUORIDOR_PLATO_H
 
-#ifndef PLATO_H
-#define PLATO_H
-void displayInfo(int remainingTime, Player players[]);
-void clearScreen();
+#include "Player.h"
+
+#define TAILLE 10
+
+typedef struct {
+    int joueur;
+} Case;
+
+extern Case plateau[TAILLE][TAILLE];
+
 void afficherPlateau();
 void initialiserPlateau();
-#endif //PLATO_H
+void clearScreen();
+void displayInfo(int remainingTime, Player players[]);
+
+#endif // QUORIDOR_PLATO_H
