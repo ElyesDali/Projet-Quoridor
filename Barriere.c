@@ -25,3 +25,4 @@ void poserBarriere(int x, int y, char type) {
         }
     }
 }
+m
