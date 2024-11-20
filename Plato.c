@@ -17,7 +17,7 @@ void initialiserPlateau() {
         }
     }
     plateau[0][4].joueur = 1;
-    plateau[8][4].joueur = 2;
+    plateau[9][4].joueur = 2;
 }
 
 void clearScreen() {
