@@ -92,7 +92,3 @@ int menu() {
 
     return 0;
 }
-
-int main() {
-    menu();
-}
