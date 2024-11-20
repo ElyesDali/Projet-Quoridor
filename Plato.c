@@ -1,8 +1,9 @@
-
 #include <stdio.h>
 #include <stdlib.h> // Pour system()
+#define BARRIERE_H
 #include <time.h>
 #include <unistd.h>
+
 
 #define TAILLE 9
 #define INITIAL_TIME (5 * 60)
