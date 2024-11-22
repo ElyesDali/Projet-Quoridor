@@ -4,11 +4,18 @@
 #include "Barriere.h"
 #include <time.h>
 #include <unistd.h>
+#include <windows.h>
 
 Case plateau[TAILLE][TAILLE];
 Barriere barriers[TAILLE * TAILLE];
 int barrierCount = 0;
 Player players[2];
+
+void Color(int couleurDuTexte,int couleurDeFond) // affichage des couleurs
+{
+    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
+}
 
 void initialiserPlateau() {
     for (int i = 0; i < TAILLE; i++) {
@@ -48,8 +55,10 @@ void afficherPlateau() {
         printf("   ");
         for (int j = 0; j < TAILLE; j++) {
             if (estBarrierePosee(i, j, 'H') || (i == 0)) {
+                Color(1, 0);
                 printf("+###");
             } else {
+                Color(6, 0);
                 printf("+---");
             }
         }
@@ -57,16 +66,21 @@ void afficherPlateau() {
         printf(" %d ", i);
         for (int j = 0; j < TAILLE; j++) {
             if (estBarrierePosee(i, j, 'V') || (j == 0)) {
+                Color(1, 0);
                 printf("#");
             } else {
+                Color(6, 0);
                 printf("|");
             }
 
             if (plateau[i][j].joueur == 1) {
+                Color (2, 0);
                 printf(" 1 ");
             } else if (plateau[i][j].joueur == 2) {
+                Color(4, 0);
                 printf(" 2 ");
             } else {
+                Color(6, 0);
                 printf("   ");
             }
         }
@@ -74,6 +88,7 @@ void afficherPlateau() {
     }
     printf("   ");
     for (int j = 0; j < TAILLE; j++) {
+        Color(6, 0);
         printf("+###");
     }
     printf("+\n");
