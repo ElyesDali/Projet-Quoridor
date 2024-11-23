@@ -17,4 +17,6 @@ add_executable(quoridor menu.c
         AfficheurPersonnaliser.c
         Victoire.c
         Victoire.h
+        gameLoop.c
+        gameLoop.h
 )
