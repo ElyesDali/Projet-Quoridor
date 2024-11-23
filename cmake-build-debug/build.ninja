@@ -79,6 +79,18 @@ build CMakeFiles/quoridor.dir/Main.c.obj: C_COMPILER__quoridor_unscanned_Debug C
   OBJECT_DIR = CMakeFiles\quoridor.dir
   OBJECT_FILE_DIR = CMakeFiles\quoridor.dir
 
+build CMakeFiles/quoridor.dir/AfficheurPersonnaliser.c.obj: C_COMPILER__quoridor_unscanned_Debug C$:/Users/joshu/quoridor/AfficheurPersonnaliser.c || cmake_object_order_depends_target_quoridor
+  DEP_FILE = CMakeFiles\quoridor.dir\AfficheurPersonnaliser.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\quoridor.dir
+  OBJECT_FILE_DIR = CMakeFiles\quoridor.dir
+
+build CMakeFiles/quoridor.dir/Victoire.c.obj: C_COMPILER__quoridor_unscanned_Debug C$:/Users/joshu/quoridor/Victoire.c || cmake_object_order_depends_target_quoridor
+  DEP_FILE = CMakeFiles\quoridor.dir\Victoire.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\quoridor.dir
+  OBJECT_FILE_DIR = CMakeFiles\quoridor.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target quoridor
@@ -87,7 +99,7 @@ build CMakeFiles/quoridor.dir/Main.c.obj: C_COMPILER__quoridor_unscanned_Debug C
 #############################################
 # Link the executable quoridor.exe
 
-build quoridor.exe: C_EXECUTABLE_LINKER__quoridor_Debug CMakeFiles/quoridor.dir/menu.c.obj CMakeFiles/quoridor.dir/Barriere.c.obj CMakeFiles/quoridor.dir/Plato.c.obj CMakeFiles/quoridor.dir/deplacement.c.obj CMakeFiles/quoridor.dir/Main.c.obj
+build quoridor.exe: C_EXECUTABLE_LINKER__quoridor_Debug CMakeFiles/quoridor.dir/menu.c.obj CMakeFiles/quoridor.dir/Barriere.c.obj CMakeFiles/quoridor.dir/Plato.c.obj CMakeFiles/quoridor.dir/deplacement.c.obj CMakeFiles/quoridor.dir/Main.c.obj CMakeFiles/quoridor.dir/AfficheurPersonnaliser.c.obj CMakeFiles/quoridor.dir/Victoire.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\quoridor.dir

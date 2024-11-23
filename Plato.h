@@ -3,7 +3,7 @@
 
 #include "Player.h"
 
-#define TAILLE 10
+#define TAILLE 9
 
 typedef struct {
     int joueur;
@@ -15,5 +15,6 @@ void afficherPlateau();
 void initialiserPlateau();
 void clearScreen();
 void displayInfo(int remainingTime, Player players[]);
+void afficherAide(); // Add this line
 
 #endif // QUORIDOR_PLATO_H

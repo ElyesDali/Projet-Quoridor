@@ -1,16 +1,25 @@
 #include <stdio.h>
 #include "Barriere.h"
 
-#define TAILLE 10  // Définir TAILLE
+#define TAILLE 10  // Define TAILLE
 
 typedef struct {
     int remainingBarriers;
-} Player;  // Définir Player
+} Player;  // Define Player
 
 extern Barriere barriers[TAILLE * TAILLE];
 extern int barrierCount;
 
 extern Player players[2];
+
+void poserBarriere(int x, int y, char type) {
+    if (barrierCount < TAILLE * TAILLE) {
+        barriers[barrierCount].x = x;
+        barriers[barrierCount].y = y;
+        barriers[barrierCount].type = type;
+        barrierCount++;
+    }
+}
 
 int estBarrierePosee(int x, int y, char type) {
     for (int i = 0; i < barrierCount; i++) {
@@ -21,17 +30,31 @@ int estBarrierePosee(int x, int y, char type) {
     return 0;
 }
 
-void poserBarriere(int x, int y, char type) {
-    if (barrierCount < TAILLE * TAILLE) {
-        barriers[barrierCount].x = x;
-        barriers[barrierCount].y = y;
-        barriers[barrierCount].type = type;
-        barrierCount++;
+void demanderBarriere(int *col, int *row, char *orientation) {
+    int validInput = 0;
 
-        if (type == 'H') {
-            players[0].remainingBarriers--;
-        } else if (type == 'V') {
-            players[1].remainingBarriers--;
+    while (!validInput) {
+        printf("Enter barrier column: ");
+        if (scanf("%d", col) != 1) {
+            printf("Invalid column! Please enter a valid column.\n");
+            while (getchar() != '\n'); // Clear the input buffer
+            continue;
         }
+
+        printf("Enter barrier row: ");
+        if (scanf("%d", row) != 1) {
+            printf("Invalid row! Please enter a valid row.\n");
+            while (getchar() != '\n'); // Clear the input buffer
+            continue;
+        }
+
+        printf("Enter barrier orientation (H for horizontal, V for vertical): ");
+        if (scanf(" %c", orientation) != 1 || (*orientation != 'H' && *orientation != 'V')) {
+            printf("Invalid orientation! Please enter H for horizontal or V for vertical.\n");
+            while (getchar() != '\n'); // Clear the input buffer
+            continue;
+        }
+
+        validInput = 1;
     }
 }

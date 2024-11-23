@@ -13,4 +13,8 @@ add_executable(quoridor menu.c
         Main.c
         menu.h
         Player.h
+        AfficheurPersonnaliser.h
+        AfficheurPersonnaliser.c
+        Victoire.c
+        Victoire.h
 )

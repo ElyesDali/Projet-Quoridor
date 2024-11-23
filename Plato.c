@@ -1,9 +1,9 @@
+
 #include "Plato.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "Barriere.h"
-#include <time.h>
-#include <unistd.h>
+
 
 Case plateau[TAILLE][TAILLE];
 Barriere barriers[TAILLE * TAILLE];
