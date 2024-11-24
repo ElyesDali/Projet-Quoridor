@@ -181,4 +181,3 @@ int menu() {
     }
     return 0; // Retourne 0 par défaut (inaccessible ici à cause de la boucle infinie)
 }
-}

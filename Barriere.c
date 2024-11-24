@@ -8,6 +8,7 @@
 extern Barriere barriers[TAILLE * TAILLE];  // Tableau pour stocker les barrières posées
 extern int barrierCount;  // Compteur de barrières posées
 
+
 extern Player players[2];  // Tableau pour stocker les informations des joueurs
 
 // Fonction de recherche de chemin à travers le plateau, utilisée pour vérifier si un joueur peut atteindre sa destination
