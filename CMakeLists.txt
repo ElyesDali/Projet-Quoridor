@@ -19,4 +19,8 @@ add_executable(quoridor menu.c
         Victoire.h
         gameLoop.c
         gameLoop.h
+        gameLoop4Joueurs.c
+        gameLoop4Joueurs.h
+        handleRedo.c
+        handleRedo.h
 )
