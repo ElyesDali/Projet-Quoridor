@@ -7,6 +7,8 @@
 #include "Victoire.h"
 #include <string.h>
 #include "handleRedo.h"
+#include <stdlib.h>
+#include <time.h>
 
 // Variables externes utilisées dans le programme
 extern int barrierCount; // Nombre total de barrières
@@ -16,107 +18,116 @@ extern Case plateau[TAILLE][TAILLE]; // Plateau de jeu
 extern Case savedPlateau[TAILLE][TAILLE]; // Sauvegarde du plateau
 
 // Fonction principale pour gérer le tour de jeu
-void gameLoop() {
-    // Position initiale des joueurs
-    int playerX = 0, playerY = 4; // Joueur 1
-    int player2X = 8, player2Y = 4; // Joueur 2
+void boucleDeJeu() {
+    // Initialiser le générateur de nombres aléatoires
+    srand(time(NULL));
 
-    int currentPlayer = 1; // Détermine le joueur en cours (1 ou 2)
-    bool redoUsed = false; // Indique si le joueur a utilisé l'option "Redo" (annuler/refaire)
+    // Initialiser les positions des joueurs
+    int joueurX = 0, joueurY = 4;
+    int joueur2X = 8, joueur2Y = 4;
+
+    // Sélectionner aléatoirement le joueur qui commence
+    int joueurActuel = (rand() % 2) + 1;
+    bool redoUtilise = false;
 
     // Variables pour stocker la dernière position et la dernière barrière
-    int lastPlayerX, lastPlayerY, lastPlayer2X, lastPlayer2Y;
-    int lastBarrierX, lastBarrierY;
-    char lastBarrierType;
+    int dernierJoueurX, dernierJoueurY, dernierJoueur2X, dernierJoueur2Y;
+    int derniereBarriereX, derniereBarriereY;
+    char derniereBarriereType;
 
-    // Boucle infinie jusqu'à la fin du jeu
+    // Boucle de jeu
     while (1) {
-        afficherPlateau(); // Affiche le plateau de jeu
-        printf("\n(0 to quit, 1 to skip, 2 to move, 3 to place barrier): ");
-        printf("\nPlayer %d's turn. Enter command: ", currentPlayer);
+        afficherPlateau(); // Afficher l'état actuel du plateau
+        printf("\n(0 pour quitter, 1 pour passer, 2 pour déplacer, 3 pour poser une barrière) : ");
+        printf("\nTour du joueur %d. Entrez la commande : ", joueurActuel);
 
-        afficherAide(); // Affiche les instructions pour aider le joueur
-        setCursorPosition(32, TAILLE + 13); // Positionne le curseur après le plateau pour éviter de décaler l'affichage
+        afficherAide(); // Afficher les règles et commandes du jeu
+        setCursorPosition(32, TAILLE + 13); // Positionner le curseur sous le plateau pour les entrées utilisateur
 
-        int command;
+        int commande;
 
-        // Lire la commande du joueur et vérifier qu'elle est valide
-        while (scanf("%d", &command) != 1 || (command < 0 || command > 3)) {
-            printf("Invalid command! Please enter a valid command (0 to quit, 1 to skip, 2 to move, 3 to place barrier): ");
-            while (getchar() != '\n'); // Vide le buffer d'entrée
+        // Valider l'entrée utilisateur pour la commande
+        while (scanf("%d", &commande) != 1 || (commande < 0 || commande > 3)) {
+            printf("Commande invalide ! Veuillez entrer une commande valide (0 pour quitter, 1 pour passer, 2 pour déplacer, 3 pour poser une barrière) : ");
+            while (getchar() != '\n'); // Vider le tampon en cas d'entrée invalide
         }
 
-        if (command == 0) {
-            break; // Quitter la boucle si le joueur entre 0
-        } else if (command == 1) {
-            // Passer le tour au joueur suivant
-            currentPlayer = (currentPlayer == 1) ? 2 : 1;
-            redoUsed = false; // Réinitialiser le statut "Redo"
-        } else if (command == 2) {
-            // Enregistrer les positions actuelles avant le déplacement
-            lastPlayerX = playerX;
-            lastPlayerY = playerY;
-            lastPlayer2X = player2X;
-            lastPlayer2Y = player2Y;
+        // Commande : quitter la partie
+        if (commande == 0) {
+            break;
+        }
+        // Commande : passer son tour
+        else if (commande == 1) {
+            joueurActuel = (joueurActuel == 1) ? 2 : 1; // Passer au joueur suivant
+            redoUtilise = false; // Réinitialiser le flag "redo"
+        }
+        // Commande : déplacer son pion
+        else if (commande == 2) {
+            // Sauvegarder les positions actuelles avant de déplacer
+            dernierJoueurX = joueurX;
+            dernierJoueurY = joueurY;
+            dernierJoueur2X = joueur2X;
+            dernierJoueur2Y = joueur2Y;
 
             // Gérer le déplacement en fonction du joueur actuel
-            if (currentPlayer == 1) {
-                gererDeplacement(&playerX, &playerY, currentPlayer);
+            if (joueurActuel == 1) {
+                gererDeplacement(&joueurX, &joueurY, joueurActuel);
             } else {
-                gererDeplacement(&player2X, &player2Y, currentPlayer);
+                gererDeplacement(&joueur2X, &joueur2Y, joueurActuel);
             }
 
             // Mettre à jour le plateau avec la nouvelle position
-            if (currentPlayer == 1) {
-                plateau[playerX][playerY].joueur = 1;
+            if (joueurActuel == 1) {
+                plateau[joueurX][joueurY].joueur = 1;
             } else {
-                plateau[player2X][player2Y].joueur = 2;
+                plateau[joueur2X][joueur2Y].joueur = 2;
             }
 
             // Vérifier si le joueur actuel a gagné
-            if ((currentPlayer == 1 && victoire(playerX, playerY, currentPlayer)) ||
-                (currentPlayer == 2 && victoire(player2X, player2Y, currentPlayer))) {
-                printf("Player %d wins!\n", currentPlayer);
-                break; // Quitter la boucle si un joueur a gagné
+            if ((joueurActuel == 1 && victoire(joueurX, joueurY, joueurActuel)) ||
+                (joueurActuel == 2 && victoire(joueur2X, joueur2Y, joueurActuel))) {
+                printf("Le joueur %d gagne !\n", joueurActuel);
+                break; // Sortir de la boucle si un joueur a gagné
             }
 
-            // Gérer l'option "Redo" si elle est disponible
-            if (!redoUsed) {
-                handleRedo(&playerX, &playerY, &player2X, &player2Y, currentPlayer,
-                           &redoUsed, lastPlayerX, lastPlayerY, lastPlayer2X, lastPlayer2Y, -1, -1, '\0');
-                if (redoUsed) continue; // Recommencer le tour si "Redo" est utilisé
+            // Gérer l'option "redo" si disponible
+            if (!redoUtilise) {
+                handleRedo(&joueurX, &joueurY, &joueur2X, &joueur2Y, joueurActuel,
+                           &redoUtilise, dernierJoueurX, dernierJoueurY, dernierJoueur2X, dernierJoueur2Y, -1, -1, '\0');
+                if (redoUtilise) continue; // Recommencer le tour si "redo" est utilisé
             }
 
             // Passer au joueur suivant
-            currentPlayer = (currentPlayer == 1) ? 2 : 1;
-            redoUsed = false; // Réinitialiser le statut "Redo"
-        } else if (command == 3) {
-            // Poser une barrière
+            joueurActuel = (joueurActuel == 1) ? 2 : 1;
+            redoUtilise = false; // Réinitialiser le flag "redo"
+        }
+        // Commande : placer une barrière
+        else if (commande == 3) {
             int col, row;
             char orientation;
 
             // Demander au joueur où placer la barrière
             demanderBarriere(&col, &row, &orientation);
 
-            // Enregistrer la position avant de poser la barrière
-            lastBarrierX = col;
-            lastBarrierY = row;
-            lastBarrierType = orientation;
+            // Sauvegarder la position avant de placer la barrière
+            derniereBarriereX = col;
+            derniereBarriereY = row;
+            derniereBarriereType = orientation;
 
-            // Gérer l'option "Redo" si elle est disponible
-            if (!redoUsed) {
-                handleRedo(&playerX, &playerY, &player2X, &player2Y, currentPlayer,
-                           &redoUsed, -1, -1, -1, -1, lastBarrierX, lastBarrierY, lastBarrierType);
-                if (redoUsed) continue; // Recommencer le tour si "Redo" est utilisé
+            // Gérer l'option "redo" si disponible
+            if (!redoUtilise) {
+                handleRedo(&joueurX, &joueurY, &joueur2X, &joueur2Y, joueurActuel,
+                           &redoUtilise, -1, -1, -1, -1, derniereBarriereX, derniereBarriereY, derniereBarriereType);
+                if (redoUtilise) continue; // Recommencer le tour si "redo" est utilisé
             }
 
-            // Poser la barrière
+            // Placer la barrière
             poserBarriere(col, row, orientation);
-            players[currentPlayer - 1].remainingBarriers--; // Décrémenter le nombre de barrières restantes
+            players[joueurActuel - 1].remainingBarriers--; // Diminuer le nombre de barrières restantes
 
             // Passer au joueur suivant
-            currentPlayer = (currentPlayer == 1) ? 2 : 1;
-            redoUsed = false; // Réinitialiser le statut "Redo"
+            joueurActuel = (joueurActuel == 1) ? 2 : 1;
+            redoUtilise = false; // Réinitialiser le flag "redo"
         }
     }
 }

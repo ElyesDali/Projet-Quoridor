@@ -1,5 +1,6 @@
 #include "gameLoop4Joueurs.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "Plato.h"
 #include "deplacement.h"
 #include "AfficheurPersonnaliser.h"
@@ -20,7 +21,11 @@ void gameLoop4Joueurs() {
     // Positions initiales des joueurs sur le plateau
     int playerX[4] = {0, 8, 4, 4}; // Coordonnées X des joueurs 1 à 4
     int playerY[4] = {4, 4, 0, 8}; // Coordonnées Y des joueurs 1 à 4
-    int currentPlayer = 1;         // Identifiant du joueur actif
+
+    // Sélection aléatoire du joueur qui commence
+    srand(time(NULL));
+    int currentPlayer = (rand() % 4) + 1;
+
     bool redoUsed = false;         // Indique si une commande "redo" a été utilisée
     int lastPlayerX[4], lastPlayerY[4]; // Sauvegarde des dernières positions des joueurs
     int lastBarrierX, lastBarrierY;     // Sauvegarde des coordonnées de la dernière barrière placée
@@ -31,8 +36,8 @@ void gameLoop4Joueurs() {
         afficherPlateau(); // Affiche l'état actuel du plateau
 
         // Options disponibles pour le joueur actif
-        printf("\n(0 to quit, 1 to skip, 2 to move, 3 to place barrier): ");
-        printf("\nPlayer %d's turn. Enter command: ", currentPlayer);
+        printf("\n(0 pour quitter, 1 pour passer, 2 pour déplacer, 3 pour poser une barrière) : ");
+        printf("\nTour du joueur %d. Entrez la commande : ", currentPlayer);
 
         afficherAide(); // Affiche les règles et commandes du jeu
         setCursorPosition(32, TAILLE + 13); // Place le curseur sous le plateau pour les entrées utilisateur
@@ -41,7 +46,7 @@ void gameLoop4Joueurs() {
 
         // Validation de l'entrée utilisateur pour la commande
         while (scanf("%d", &command) != 1 || (command < 0 || command > 3)) {
-            printf("Invalid command! Please enter a valid command (0 to quit, 1 to skip, 2 to move, 3 to place barrier): ");
+            printf("Commande invalide ! Veuillez entrer une commande valide (0 pour quitter, 1 pour passer, 2 pour déplacer, 3 pour poser une barrière) : ");
             while (getchar() != '\n'); // Vide le tampon en cas d'entrée invalide
         }
 
@@ -70,15 +75,14 @@ void gameLoop4Joueurs() {
 
             // Vérifie si le joueur a gagné
             if (victoire(playerX[currentPlayer - 1], playerY[currentPlayer - 1], currentPlayer)) {
-                printf("Player %d wins!\n", currentPlayer);
+                printf("Le joueur %d gagne !\n", currentPlayer);
                 break;
             }
 
             // Gestion de l'option "redo" (annulation du dernier mouvement)
             if (!redoUsed) {
                 handleRedo(playerX, playerY, NULL, NULL, currentPlayer, &redoUsed,
-                           lastPlayerX[currentPlayer - 1], lastPlayerY[currentPlayer - 1],
-                           -1, -1, -1, -1, '\0');
+                           lastPlayerX[currentPlayer - 1], lastPlayerY[currentPlayer - 1], -1, -1, -1, -1, '\0');
                 if (redoUsed) continue; // Si "redo" est utilisé, passe au tour suivant
             }
 

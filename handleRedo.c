@@ -1,4 +1,4 @@
-#include "handleRedo.h"  // Inclusion de l'en-tête pour la gestion du redo (annuler/rehabiter un mouvement)
+#include "handleRedo.h"  // Inclusion de l'en-tête pour la gestion du redo (annuler un mouvement)
 #include "Plato.h"        // Inclusion de l'en-tête pour la gestion du plateau de jeu
 #include <stdio.h>        // Inclusion de la bibliothèque standard pour les entrées/sorties
 #include <string.h>       // Inclusion de la bibliothèque pour manipuler les chaînes de caractères
