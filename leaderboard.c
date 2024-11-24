@@ -5,7 +5,7 @@
 
 #define MAX_JOUEURS 4
 #define MAX_NOM 50
-#define nbJoueurs 4
+#define nb_joueurs 4
 
 // Structure pour représenter un joueur
 typedef struct {
@@ -76,7 +76,7 @@ void sauvegarderDonnees(Player players[], int nb_joueurs) {
 }
     printf("\n");
 }
-void leaderboard();
+void leaderboard(players, nb_joueurs);
 initialiserClassement(Player players[], int nb_joueurs)
 for (int i = 0; i < nb_joueurs; i++) {
         if (victoire(PlayerX[i], PlayerY[i], i + 1)) {
