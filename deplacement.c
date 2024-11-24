@@ -21,7 +21,7 @@ void gererDeplacement(int *playerX, int *playerY, int currentPlayer) {
             case 'd': newY++; break; // Move right
             default:
                 printf("Invalid direction!\n");
-            continue;
+                continue;
         }
 
         // Vérification des limites du plateau
@@ -33,7 +33,32 @@ void gererDeplacement(int *playerX, int *playerY, int currentPlayer) {
                 (direction == 'd' && estBarrierePosee(*playerX, newY, 'V'))) {
                 printf("You cannot move in that direction! A barrier is blocking the way.\n");
                 continue;
+            }
+
+            // Check if the player is face-to-face with the other player
+            if (plateau[newX][newY].joueur != 0) {
+                int opponentX = newX;
+                int opponentY = newY;
+                int jumpX = newX;
+                int jumpY = newY;
+
+                switch (direction) {
+                    case 'w': jumpX--; break; // Jump up
+                    case 'a': jumpY--; break; // Jump left
+                    case 's': jumpX++; break; // Jump down
+                    case 'd': jumpY++; break; // Jump right
                 }
+
+                // Check if the jump is within bounds and not blocked by a barrier
+                if (jumpX >= 0 && jumpX < TAILLE && jumpY >= 0 && jumpY < TAILLE &&
+                    !estBarrierePosee(opponentX, opponentY, direction == 'w' || direction == 's' ? 'H' : 'V')) {
+                    newX = jumpX;
+                    newY = jumpY;
+                } else {
+                    printf("You cannot jump over the opponent! A barrier is blocking the way.\n");
+                    continue;
+                }
+            }
 
             // Mise à jour de la position sur le plateau
             plateau[*playerX][*playerY].joueur = 0; // Efface la position actuelle
