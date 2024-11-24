@@ -1,14 +1,15 @@
-
 #include "Plato.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "Barriere.h"
 
-
 Case plateau[TAILLE][TAILLE];
+Case savedPlateau[TAILLE][TAILLE]; // Define savedPlateau here
 Barriere barriers[TAILLE * TAILLE];
 int barrierCount = 0;
 Player players[2];
+
+Case savedPlateau[TAILLE][TAILLE]; // Define savedPlateau here
 
 void initialiserPlateau() {
     for (int i = 0; i < TAILLE; i++) {

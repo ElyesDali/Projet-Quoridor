@@ -1,23 +1,71 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "Barriere.h"
+#include "Plato.h"
 
-#define TAILLE 10  // Define TAILLE
-
-typedef struct {
-    int remainingBarriers;
-} Player;  // Define Player
+#define TAILLE 9
 
 extern Barriere barriers[TAILLE * TAILLE];
 extern int barrierCount;
 
 extern Player players[2];
 
+bool floodFill(int x, int y, int goalX, int goalY, bool visited[TAILLE][TAILLE]) {
+    if (x < 0 || x >= TAILLE || y < 0 || y >= TAILLE || visited[x][y] || plateau[x][y].joueur == -1) {
+        return false;
+    }
+    if (x == goalX && y == goalY) {
+        return true;
+    }
+    visited[x][y] = true;
+
+    // Check all four directions
+    if (!estBarrierePosee(x, y, 'H') && floodFill(x - 1, y, goalX, goalY, visited)) return true; // Up
+    if (!estBarrierePosee(x + 1, y, 'H') && floodFill(x + 1, y, goalX, goalY, visited)) return true; // Down
+    if (!estBarrierePosee(x, y, 'V') && floodFill(x, y - 1, goalX, goalY, visited)) return true; // Left
+    if (!estBarrierePosee(x, y + 1, 'V') && floodFill(x, y + 1, goalX, goalY, visited)) return true; // Right
+
+    return false;
+}
+
+bool validerBarriere(int x, int y, char orientation) {
+    // Simulate the placement of the barrier
+    barriers[barrierCount].x = x;
+    barriers[barrierCount].y = y;
+    barriers[barrierCount].type = orientation;
+    barrierCount++;
+
+    // Check paths for each player
+    bool visited[TAILLE][TAILLE] = {false};
+    bool cheminJoueur1 = floodFill(0, 4, 8, 4, visited); // Player 1 must reach row 8
+
+    for (int i = 0; i < TAILLE; i++) {
+        for (int j = 0; j < TAILLE; j++) {
+            visited[i][j] = false;
+        }
+    }
+
+    bool cheminJoueur2 = floodFill(8, 4, 0, 4, visited); // Player 2 must reach row 0
+
+    // Revert the placement if a player is blocked
+    if (!cheminJoueur1 || !cheminJoueur2) {
+        barrierCount--;
+        return false;
+    }
+
+    return true;
+}
+
 void poserBarriere(int x, int y, char type) {
     if (barrierCount < TAILLE * TAILLE) {
-        barriers[barrierCount].x = x;
-        barriers[barrierCount].y = y;
-        barriers[barrierCount].type = type;
-        barrierCount++;
+        if (validerBarriere(x, y, type)) {
+            barriers[barrierCount].x = x;
+            barriers[barrierCount].y = y;
+            barriers[barrierCount].type = type;
+            barrierCount++;
+        } else {
+            printf("Placement de la barrière invalide : cela bloque le passage d'un joueur.\n");
+        }
     }
 }
 
