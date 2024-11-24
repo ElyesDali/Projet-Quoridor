@@ -34,16 +34,16 @@ void demanderBarriere(int *col, int *row, char *orientation) {
     int validInput = 0;
 
     while (!validInput) {
-        printf("Enter barrier column: ");
+        printf("Enter barrier lignes: ");
         if (scanf("%d", col) != 1) {
-            printf("Invalid column! Please enter a valid column.\n");
+            printf("Invalid column! Please enter a valid ligne.\n");
             while (getchar() != '\n'); // Clear the input buffer
             continue;
         }
 
-        printf("Enter barrier row: ");
+        printf("Enter barrier colonnes: ");
         if (scanf("%d", row) != 1) {
-            printf("Invalid row! Please enter a valid row.\n");
+            printf("Invalid row! Please enter a valid colonnes.\n");
             while (getchar() != '\n'); // Clear the input buffer
             continue;
         }

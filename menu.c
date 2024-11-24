@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "Plato.h"
+#include "gameLoop.h"
+
 
 int menu() {
     int choix = 0;
@@ -25,18 +27,43 @@ int menu() {
                 printf("\nChoix : ");
                 scanf("%d", &choix);
 
-                switch (choix) {
-                    case 1:
-                    case 2:
-                        printf("Mode sélectionné.\n");
-                        initialiserPlateau();
-                        gameLoop();
-                        break;
-                    case 3:
-                        break;
-                    default:
-                        printf("Choix invalide.\n");
+                if (choix == 1 || choix == 2) {
+                    int mode = choix;
+                    printf("\n1 : 4 Joueurs\n");
+                    printf("2 : 2 Joueurs\n");
+                    printf("3 : Retour\n");
+                    printf("\nChoix : ");
+                    scanf("%d", &choix);
+
+                    switch (choix) {
+                        case 1:
+                            printf("Mode 4 Joueurs sélectionné.\n");
+                            //initialiserPlateau4Joueurs(); // Initialize the board for 4 players
+                            if (mode == 1) {
+                               // gameLoop4Joueurs(); // Start the game loop for 4 players in Normal mode
+                            } else {
+                              //  gameLoop4JoueursBlitz(); // Start the game loop for 4 players in Blitz mode
+                            }
+                            break;
+                        case 2:
+                            printf("Mode 2 Joueurs sélectionné.\n");
+                            initialiserPlateau();
+                            if (mode == 1) {
+                                gameLoop(); // Start the game loop for 2 players in Normal mode
+                            } else {
+                               // gameLoopBlitz(); // Start the game loop for 2 players in Blitz mode
+                            }
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            printf("Choix invalide.\n");
+                            break;
+                    }
+                } else if (choix == 3) {
                     break;
+                } else {
+                    printf("Choix invalide.\n");
                 }
                 break;
 

@@ -4,6 +4,7 @@
 
 #ifndef VICTOIRE_H
 #define VICTOIRE_H
+
 int victoire(int PlayerX,int PlayerY, int currentPlayer);
 
 #endif //VICTOIRE_H
