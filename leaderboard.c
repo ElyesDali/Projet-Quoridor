@@ -1,65 +1,100 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define MAX_JOUEURS 4
 #define MAX_NOM 50
+#define nbJoueurs 4
 
+// Structure pour représenter un joueur
 typedef struct {
     char nom[MAX_NOM];
     int classement;
-    int coups;
     int victoires;
-    int parties_jouees;
-} Joueur;
+    int nbpartiesjouees;
+} Player;
 
-void initialiserClassement(Joueur *joueurs, int nbJoueurs) {
-    // Initialisation basique du classement
-    for (int i = 0; i < nbJoueurs; i++) {
-        joueurs[i].classement = i + 1;
-        joueurs[i].coups = 0;
-        joueurs[i].victoires = 0;
-        joueurs[i].parties_jouees = 0;
+// Fonction pour vérifier si un joueur a gagné
+int victoire(int PlayerX, int PlayerY, int currentPlayer) {
+    if (currentPlayer == 1) {
+        return (PlayerX == 8); // Le joueur 1 gagne s'il atteint la ligne 8 (indexé à partir de 0)
+    } else if (currentPlayer == 2) {
+        return (PlayerX == 0); // Le joueur 2 gagne s'il atteint la ligne 0
+    } else if (currentPlayer == 3 || currentPlayer == 4) {
+        return (PlayerY == 8); // Les joueurs 3 et 4 gagnent s'ils atteignent la colonne 8
+    }
+    return 0;
+}
+
+// Fonction pour initialiser les statistiques des joueurs
+void initialiserClassement(Player players[], int nb_joueurs) {
+    for (int i = 0; i < nb_joueurs; i++) {
+        players[i].classement = i + 1;
+        players[i].victoires = 0;
+        players[i].nbpartiesjouees = 0;
     }
 }
 
-void miseAJourJoueur(Joueur *joueur, int coups, int gagnant) {
-    joueur->coups += coups;
-    joueur->parties_jouees++; // Incrémentation des parties jouées
-    if (gagnant) {
-        joueur->victoires++; // Incrémentation des victoires
+// Fonction pour mettre à jour les statistiques d'un joueur après une victoire
+void miseAJourJoueur(Player players[], int nb_joueurs, int gagnant) {
+    for (int i = 0; i < nb_joueurs; i++) {
+        players[i].nom[strcspn(players[i].nom, "\n")] = '\0'; // Enlever le '\n' après fgets
+    }
+    players[gagnant].victoires++; // Incrémentation des victoires du gagnant
+    for (int i = 0; i < nb_joueurs; i++) {
+        players[i].nbpartiesjouees++; // Incrémentation des parties jouées pour tous les joueurs
     }
 }
 
-void trierClassement(Joueur *joueurs, int nbJoueurs) {
-   
-    for (int i = 0; i < nbJoueurs - 1; i++) {
-        for (int j = 0; j < nbJoueurs - i - 1; j++) {
-            if (joueurs[j].victoires < joueurs[j + 1].victoires) {
-                Joueur temp = joueurs[j];
-                joueurs[j] = joueurs[j + 1];
-                joueurs[j + 1] = temp;
+// Fonction pour trier les joueurs par nombre de victoires
+void trierClassement(Player players[], int nb_joueurs) {
+    for (int i = 0; i < nb_joueurs - 1; i++) {
+        for (int j = 0; j < nb_joueurs - i - 1; j++) {
+            if (players[j].victoires < players[j + 1].victoires) {
+                Player temp = players[j];
+                players[j] = players[j + 1];
+                players[j + 1] = temp;
             }
         }
     }
     // Mise à jour des classements
-    for (int i = 0; i < nbJoueurs; i++) {
-        joueurs[i].classement = i + 1;
+    for (int i = 0; i < nb_joueurs; i++) {
+        players[i].classement = i + 1;
     }
 }
 
-void afficherClassement(Joueur *joueurs, int nbJoueurs) {
-    // Affiche le classement actuel
-    printf("\n--- Classement ---\n");
-    printf("Rang | Nom                 | Coups | Victoires | Parties jouées\n");
-    printf("-----|---------------------|-------|-----------|----------------\n");
-    for (int i = 0; i < nbJoueurs; i++) {
-        printf("%-4d | %-19s | %-5d | %-9d | %-14d\n",
-               joueurs[i].classement,
-               joueurs[i].nom,
-               joueurs[i].coups,
-               joueurs[i].victoires,
-               joueurs[i].parties_jouees);
+// Fonction pour afficher le classement des joueurs
+void afficherClassement(Player players[], int nb_joueurs) {
+    printf("\n╔════════════════════════════════════════════════════════╗\n");
+    printf("║           CLASSEMENT FINAL            ║\n");
+    printf("╠══════╦════════════════════╦═══════════╦════════════════╣\n");
+    printf("║ Rang │ Nom                │ Victoires │ Parties jouées ║\n");
+    printf("╠══════╬════════════════════╬═══════════╬════════════════╣\n");
+    for (int i = 0; i < nb_joueurs; i++) {
+        printf("║ %-4d │ %-18s │ %-9d │ %-14d ║\n", i + 1, players[i].nom, players[i].victoires, players[i].nbpartiesjouees);
     }
+    printf("╚════════════════════════════════════════════════════════╝\n");
+}
+
+// Fonction pour sauvegarder les données dans un fichier
+void sauvegarderDonnees(Player players[], int nb_joueurs) {
+    FILE *fichier = fopen("leaderboard.txt", "w");
+    for (int i = 0; i < nb_joueurs; i++) {
+        fprintf(fichier, "%s %d %d\n", players[i].nom, players[i].victoires, players[i].nbpartiesjouees);
+    }
+    fclose(fichier);
+}
     printf("\n");
 }
+void leaderboard();
+initialiserClassement(Player players[], int nb_joueurs)
+for (int i = 0; i < nb_joueurs; i++) {
+        if (victoire(PlayerX[i], PlayerY[i], i + 1)) {
+            miseAJourJoueur(players, nb_joueurs, i); // Mise à jour des statistiques
+            trierClassement(players, nb_joueurs);    // Trier les joueurs
+            afficherClassement(players, nb_joueurs); // Afficher le classement
+            sauvegarderDonnees(players, nb_joueurs); // Sauvegarder les données
+            return; // Quitter dès qu'un gagnant est trouvé
+        }
+    }
